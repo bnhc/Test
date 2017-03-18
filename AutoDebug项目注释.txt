@@ -1,0 +1,109 @@
+auto_test.json
+检测过程中：
+   测试通过：resultBean  module function processTip resultTip
+   测试异常：ErrorInfo  
+
+module:"net"
+
+1、task:shell_install   ShellInstallTask  是否安装
+
+      1)只判断 ashy.earl.magicshell是否安装，还未进行修复操作 
+           
+2、task:net_open   NetOpenTask  网络是否打开
+
+      1)判断网络打开 
+      2)网络连接类型  wifi/以太网
+      以上结果保存在 NetResult
+
+3、task:net_param  NetParamTask
+
+      1) 获取 dns1 dns2  gateWay网关   Mask掩码 
+
+4、task:router     NetRouterTask  路由器
+
+      1)检测ip格式是否正确
+      2)获取网关地址  
+      3)ping 网关  获取 丢包率和延迟
+
+5、task:internet  NetInternetTask 外网检测
+
+     cenv 云端环境
+      1)获取当前云端环境 cenv 默认是 pub  baseUrl= "http://dslookup.instwall.com"
+      2)如果环境是 万达 或者 镜尚  
+             获取 baseUrl   判断canAccess
+             检测是否是商业wifi
+      3)如果是pub 
+             判断 "http://dslookup.instwall.com"  判断canAccess
+             判断是否是商业wifi
+
+6、task:lockup  CheckLookUpTask 获取节点
+
+      1) 如果云端环境 CENV 是万达环境
+            从adb(magicshell)读取 perssist.sys.pub.baseurls  云端节点信息
+               
+      2) 如果云端环境 CENV 是镜尚环境
+
+      3)如果环境 pub
+            getBaseUrlFromAsset()--->读取baseUrl_ja = http://dslookup.instwall.com
+            checkBaseUrls(baseUrl_ja) ----->  getLookup(baseUlr) 返回 MResponse 其属性 strResponse 包含node信息 
+                
+            通过LookupManager.getInstance().setLookUpStr(lookupStr) 将其保存
+
+7、task:parse_env ParseEnvTask 
+        
+      1)initDeviceUtil(env_en,hardware_type,did_obtain_method) ---》MApplication
+      ？
+
+      2)获取到 AU 对应的 服务节点信息
+
+8、task:server NetServerTask
+      1)如果环境是 万达 或者 镜尚  
+             获取 baseUrl   判断canAccess
+      2)如果环境是 pub
+             判断   CLOUND_ADDRESS = "http://www.instwall.com";
+             判断   USA_CLOUND_ADDRESS = "http://lookup.picboxinc.com";              
+             判断   ALL_IN_ONE_ADDRESS = "http://192.168.10.80:20060";
+             判断   "http://sandbox-lookup.instwall.com"; 
+             判断   SANDBOX_CLOUND_ADDRESS = "http://sandbox-lookup.instwall.com"; 
+             以上全部测试 判断canAccess
+9、task:server_port NetServerProtTask
+       1)判断 US 节点是否存在
+       2)判断 US 节点是否 canAccess
+       3)判断 GC 节点是否存在
+       4)判断 GC 节点是否 canAccess
+       5)判断 CS 节点是否存在  
+       6)判断 CS 节点  checkImNode(ArrayList<LookupNode>
+
+
+10、task:net_speed  NetSpeedTask
+
+
+
+
+
+moudle:"device"
+
+1、task:shell_install   ShellInstallTask
+
+      1)只判断 ashy.earl.magicshell是否安装，还未进行修复操作 
+
+2、task:storage  StorageTask
+
+      1)获取TotalSize
+      2)获取availavleSize
+      3)isLowCache(availableSize) 判断缓存 >200
+           如果 <200   CleanCache()
+
+3、task:device_mem  MemCheckTask 
+
+
+moudle:"software"
+
+ 1、shell_install
+
+
+ 2、get_version
+
+
+ 3、check_version
+
