@@ -48,7 +48,8 @@ import tensorflow as tf
 import fileinput
 
 FLAGS = None
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
+os.environ['
+TF_CPP_MIN_LOG_LEVEL'] = '0'
 # pylint: disable=line-too-long
 DATA_URL = 'http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz'
 # pylint: enable=line-too-long
@@ -198,9 +199,8 @@ def maybe_download_and_extract():
 def main(_):
   #maybe_download_and_extract()
   print('main')
-  filename = raw_input('Please input the fullfilename:')
   image = (FLAGS.image_file if FLAGS.image_file else
-           os.path.join(FLAGS.model_dir, filename))
+           os.path.join(FLAGS.model_dir, 'cropped_panda.jpg'))
   run_inference_on_image(image)
 
 

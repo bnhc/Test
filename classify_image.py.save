@@ -48,7 +48,7 @@ import tensorflow as tf
 import fileinput
 
 FLAGS = None
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 # pylint: disable=line-too-long
 DATA_URL = 'http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz'
 # pylint: enable=line-too-long
@@ -110,6 +110,18 @@ class NodeLookup(object):
         tf.logging.fatal('Failed to locate: %s', val)
       name = uid_to_human[val]
       node_id_to_name[key] = name
+def create_graph():
+  """Creates a graph from saved GraphDef file and returns a saver."""
+  # Creates graph from saved graph_def.pb.
+  print('create_graph()')
+  #with tf.gfile.FastGFile(os.path.join(FLAGS.model_dir, 'classify_image_graph_def.pb'), 'rb') as f:
+  with tf.gfile.FastGFile('classify_image_graph_def.pb', 'rb') as f:
+    graph_def = tf.GraphDef()
+    print('get graph_def')
+    graph_def.ParseFromString(f.read())
+    print('ParseFromString()')
+    _ = tf.import_graph_def(graph_def, name='')
+    print(_)
 
     return node_id_to_name
 
@@ -171,8 +183,7 @@ def run_inference_on_image(image):
     for node_id in top_k:
       human_string = node_lookup.id_to_string(node_id)
       score = predictions[node_id]
-      #print('%s(%s)---(Matching = %.5f)' % (human_string,baidu(human_string,dst='zh').encode('utf-8'), score))
-      print('%s---(Matching = %.5f)' % (human_string,score))
+      print('%s(%s)---(Matching = %.5f)' % (human_string,baidu(human_string,dst='zh').encode('utf-8'), score))
 
 
 def maybe_download_and_extract():
@@ -198,9 +209,8 @@ def maybe_download_and_extract():
 def main(_):
   #maybe_download_and_extract()
   print('main')
-  filename = raw_input('Please input the fullfilename:')
   image = (FLAGS.image_file if FLAGS.image_file else
-           os.path.join(FLAGS.model_dir, filename))
+           os.path.join(FLAGS.model_dir, 'cropped_panda.jpg'))
   run_inference_on_image(image)
 
 
