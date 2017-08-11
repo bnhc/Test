@@ -1,0 +1,5 @@
+-c --cpu Cortex-M3 -g -O0 --apcs=interwork -I..\HARDWARE\LED -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\USER -I..\STM32F10x_FWLib\inc -I..\CORE -I..\HARDWARE\KEY -I..\HARDWARE\EXTI -I..\HARDWARE\WDG -I..\HARDWARE\TIMER -I..\HARDWARE\UltrasonicWave 
+-I "E:\Program Files\Keil\ARM\RV31\INC" 
+-I "E:\Program Files\Keil\ARM\CMSIS\Include" 
+-I "E:\Program Files\Keil\ARM\Inc\ST\STM32F10x" 
+-DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -o "timer.o" --omf_browse "timer.crf" --depend "timer.d" "..\HARDWARE\TIMER\timer.c"
