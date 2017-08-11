@@ -1,2 +1,7 @@
 # Test
-This is my first repository
+This is My Local Test Direct.
+  include: Python
+           Android
+           Raspberry
+           ..
+           Some Image
